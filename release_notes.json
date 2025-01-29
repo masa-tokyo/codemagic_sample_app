@@ -1,10 +1,17 @@
 [
   {
     "language": "en-GB",
-    "text": "British English release notes text"
+    "text": [
+      "British English release notes text line 1.",
+      "British English release notes text line 2."
+    ]
+  },
+  {
+    "language": "ja",
+    "text": "The Japanese release notes text line 1.\nThe Japanese release notes text line 2."
   },
   {
     "language": "en-US",
-    "text": "The US English release notes text"
+    "text": "The US English release notes text."
   }
 ]
