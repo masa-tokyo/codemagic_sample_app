@@ -12,8 +12,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child:
-              Text('Hello World from Shorebird code push!\n Version: 1.0.0+31'),
+          child: Text('Hello World from Shorebird code push!'),
         ),
       ),
     );
