@@ -1,7 +1,7 @@
 name: codemagic_sample_app
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0+14
+version: 1.0.0+33
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
@@ -17,3 +17,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - shorebird.yaml
