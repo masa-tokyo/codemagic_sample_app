@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child:
-              Text('Hello World from Shorebird code push!\n Version: 1.0.0+30'),
+              Text('Hello World from Shorebird code push!\n Version: 1.0.0+31'),
         ),
       ),
     );
