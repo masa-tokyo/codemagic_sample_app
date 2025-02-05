@@ -38,6 +38,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId = "com.sample.codemagic_sample_app"
         // You can update the following values to match your application needs.
