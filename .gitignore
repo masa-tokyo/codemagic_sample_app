@@ -48,5 +48,6 @@ app.*.map.json
 # env
 .env
 
-# Release Notes
+# Alternative release notes file patterns
 release_notes.json
+release_notes_*.txt
