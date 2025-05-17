@@ -1,1 +1,0 @@
-US English release notes for Codemagic Sample App.
