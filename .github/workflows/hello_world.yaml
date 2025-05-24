@@ -3,6 +3,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-  steps:
-    - name: Echo Hello World
-      run: echo "Hello, World!"
+    steps:
+      - name: Echo Hello World
+        run: echo "Hello, World!"
