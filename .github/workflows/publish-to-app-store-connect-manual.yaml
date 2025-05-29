@@ -20,13 +20,17 @@ jobs:
         run: pip install codemagic-cli-tools
       - name: Set up keychain
         run: keychain initialize
-      - name: Fetch signing files
+      - name: Set up Provisioning profiles
         run: |
-          app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) \
-          --type IOS_APP_STORE \
-          --create    
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
+          echo ${DIST_PROFILE} | base64 --decode > "$PROFILE_PATH"
+          echo "Saved provisioning profile $PROFILE_PATH"
       - name: Set up signing certificate
-        run: keychain add-certificates
+        run: |
+          echo $DIST_CERTIFICATE | base64 --decode > /tmp/certificate.p12
+          keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $DIST_CERTIFICATE_PASSWORD
       - name: Set up code signing settings on Xcode project
         run: xcode-project use-profiles
       - name: Increment build number
