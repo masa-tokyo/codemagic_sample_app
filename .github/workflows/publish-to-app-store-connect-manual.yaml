@@ -1,4 +1,4 @@
-name: Publish to App Store Connect
+name: Publish to App Store Connect (Manual)
 on: 
   workflow_dispatch:
 jobs:
