@@ -35,29 +35,29 @@ jobs:
       # Android signing setup (different from iOS keychain approach)
       - name: Set up Android keystore
         run: |
-          # Decode and setup Android keystore
+          # TODO(masaki): 1. Decode and setup Android keystore
           # Much simpler than iOS certificate/provisioning profile setup
           
       # Create key.properties for Android build (Flutter/Android specific)
       - name: Create key.properties
         run: |
-          # Generate key.properties file for Android signing
+          # TODO(masaki): 2. Generate key.properties file for Android signing
           # This is Android/Flutter specific step
           
       # Version increment (similar concept but different commands)
       - name: Increment build number
         run: |
-          # Use google-play CLI to get latest version code from Play Console
+          # TODO(masaki): 3. Use google-play CLI to get latest version code from Play Console
           # Similar to app-store-connect get-latest-testflight-build-number
           
       # Build Android App Bundle (equivalent to building iOS .ipa)
       - name: Build Android App Bundle
         run: |
-          # Build .aab file instead of .ipa
+          # TODO(masaki): 4. Build .aab file instead of .ipa
           # flutter build appbundle --release
           
       # Publish to Google Play (equivalent to App Store Connect publish)
       - name: Publish to Google Play
         run: |
-          # Use google-play publish command with .aab file
+          # TODO(masaki): 5. Use google-play publish command with .aab file
           # Similar structure to app-store-connect publish but for Android 
