@@ -1,0 +1,11 @@
+name: Publish to Google Play
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Can use Linux for Android builds (vs macOS for iOS)
+    steps:
+        # TODO(masaki): add actual implementation
+      - name: Verify workflow triggers
+        run: echo "Workflow triggered successfully" 
