@@ -1,63 +1,11 @@
 name: Publish to Google Play
 on: 
-  workflow_dispatch:  # Manual trigger for testing, same as App Store version
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest  # Can use Linux for Android builds (vs macOS for iOS)
-    env:
-        # Google Play authentication - Service Account JSON key
-        GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS }}
-        
-        # Android signing credentials (simpler than iOS)
-        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
-        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        
-        # Google Play app configuration
-        GOOGLE_PLAY_PACKAGE_NAME: ${{ vars.GOOGLE_PLAY_PACKAGE_NAME }}
-        
     steps:
-      # Standard setup steps (similar to App Store)
-      - uses: actions/checkout@v4
-      
-      # Flutter setup (same as App Store workflow)
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-            channel: 'stable'
-      
-      # Install Codemagic CLI tools (same command)
-      - name: Install Codemagic CLI tools
-        run: pip install codemagic-cli-tools
-      
-      # Android signing setup (different from iOS keychain approach)
-      - name: Set up Android keystore
-        run: |
-          # TODO(masaki): 1. Decode and setup Android keystore
-          # Much simpler than iOS certificate/provisioning profile setup
-          
-      # Create key.properties for Android build (Flutter/Android specific)
-      - name: Create key.properties
-        run: |
-          # TODO(masaki): 2. Generate key.properties file for Android signing
-          # This is Android/Flutter specific step
-          
-      # Version increment (similar concept but different commands)
-      - name: Increment build number
-        run: |
-          # TODO(masaki): 3. Use google-play CLI to get latest version code from Play Console
-          # Similar to app-store-connect get-latest-testflight-build-number
-          
-      # Build Android App Bundle (equivalent to building iOS .ipa)
-      - name: Build Android App Bundle
-        run: |
-          # TODO(masaki): 4. Build .aab file instead of .ipa
-          # flutter build appbundle --release
-          
-      # Publish to Google Play (equivalent to App Store Connect publish)
-      - name: Publish to Google Play
-        run: |
-          # TODO(masaki): 5. Use google-play publish command with .aab file
-          # Similar structure to app-store-connect publish but for Android 
+        # TODO(masaki): add actual implementation
+      - name: Verify workflow triggers
+        run: echo "Workflow triggered successfully" 
