@@ -19,20 +19,20 @@ jobs:
         GOOGLE_PLAY_PACKAGE_NAME: ${{ vars.GOOGLE_PLAY_PACKAGE_NAME }}
         
     steps:
-      # Standard setup steps (similar to App Store)
+      # Standard setup steps
       - uses: actions/checkout@v4
       
-      # Flutter setup (same as App Store workflow)
+      # Flutter setup
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
             channel: 'stable'
       
-      # Install Codemagic CLI tools (same command)
+      # Install Codemagic CLI tools
       - name: Install Codemagic CLI tools
         run: pip install codemagic-cli-tools
       
-      # Android signing setup (different from iOS keychain approach)
+      # Android signing setup
       - name: Set up Android keystore
         run: |
           # TODO(masaki): 1. Decode and setup Android keystore
