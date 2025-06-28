@@ -2,9 +2,10 @@ name: Publish to Google Play
 on: 
   workflow_dispatch:
 
+    # TODO(masaki): Delete unnecessary comments after finishing writing the blog.
 jobs:
   build:
-    runs-on: ubuntu-latest  # Can use Linux for Android builds (vs macOS for iOS)
+    runs-on: ubuntu-latest
     env:
         # Google Play authentication - Service Account JSON key
         GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS }}
@@ -12,9 +13,11 @@ jobs:
         # Android signing credentials (simpler than iOS)
         ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        # TODO(masaki): Consider whether to store the key alias as a secret or variable.
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         
+        # TODO(masaki): Check where to use this variable.
         # Google Play app configuration
         GOOGLE_PLAY_PACKAGE_NAME: ${{ vars.GOOGLE_PLAY_PACKAGE_NAME }}
         
@@ -33,10 +36,14 @@ jobs:
         run: pip install codemagic-cli-tools
       
       # Android signing setup
+      # TODO(masaki): Consider whether to store the keystore file name as a secret or variable.
+      # TODO(masaki): Check the path of the keystore file.
       - name: Set up Android keystore
         run: |
-          # TODO(masaki): 1. Decode and setup Android keystore
-          # Much simpler than iOS certificate/provisioning profile setup
+          # Decode the base64-encoded keystore from GitHub secrets and save as upload-keystore.jks.
+          # The ANDROID_KEYSTORE secret contains the keystore file encoded in base64.
+          # This keystore file is required for signing the Android app bundle.
+          echo "$ANDROID_KEYSTORE" | base64 --decode > upload-keystore.jks
           
       # Create key.properties for Android build (Flutter/Android specific)
       - name: Create key.properties
