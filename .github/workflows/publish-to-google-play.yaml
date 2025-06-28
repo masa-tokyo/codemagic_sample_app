@@ -13,8 +13,8 @@ jobs:
         # Android signing credentials (simpler than iOS)
         ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        # TODO(masaki): Consider whether to store the key alias as a secret or variable.
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEYSTORE_FILENAME: ${{ vars.ANDROID_KEYSTORE_FILENAME }}
+        ANDROID_KEY_ALIAS: ${{ vars.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         
         # TODO(masaki): Check where to use this variable.
@@ -36,20 +36,25 @@ jobs:
         run: pip install codemagic-cli-tools
       
       # Android signing setup
-      # TODO(masaki): Consider whether to store the keystore file name as a secret or variable.
-      # TODO(masaki): Check the path of the keystore file.
+      #
+      # Decode the base64-encoded keystore from GitHub secrets and save it.
+      # The ANDROID_KEYSTORE secret contains the keystore file encoded in base64.
+      # This keystore file is required for signing the Android app bundle.
       - name: Set up Android keystore
         run: |
-          # Decode the base64-encoded keystore from GitHub secrets and save as upload-keystore.jks.
-          # The ANDROID_KEYSTORE secret contains the keystore file encoded in base64.
-          # This keystore file is required for signing the Android app bundle.
-          echo "$ANDROID_KEYSTORE" | base64 --decode > upload-keystore.jks
-          
-      # Create key.properties for Android build (Flutter/Android specific)
+          echo "$ANDROID_KEYSTORE" | base64 --decode > android/app/$ANDROID_KEYSTORE_FILENAME
+
+      # Create key.properties file with Android signing configuration
+      #
+      # This file is used by Flutter build process to sign the app bundle.
       - name: Create key.properties
         run: |
-          # TODO(masaki): 2. Generate key.properties file for Android signing
-          # This is Android/Flutter specific step
+          cat > android/key.properties << EOF
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyPassword=$ANDROID_KEY_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          storeFile=$ANDROID_KEYSTORE_FILENAME
+          EOF
           
       # Version increment (similar concept but different commands)
       - name: Increment build number
