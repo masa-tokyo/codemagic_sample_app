@@ -79,4 +79,4 @@ jobs:
         run: |
           google-play bundles publish \
           --bundle "build/app/outputs/bundle/release/app-release.aab" \
-          --track internal
+          --track "internal"
