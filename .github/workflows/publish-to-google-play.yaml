@@ -70,8 +70,7 @@ jobs:
       # Build Android App Bundle (equivalent to building iOS .ipa)
       - name: Build Android App Bundle
         run: |
-          # TODO(masaki): 4. Build .aab file instead of .ipa
-          # flutter build appbundle --release
+          flutter build appbundle --release --build-number=$FLUTTER_BUILD_NUMBER
           
       # Publish to Google Play (equivalent to App Store Connect publish)
       - name: Publish to Google Play
