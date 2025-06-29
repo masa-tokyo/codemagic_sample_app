@@ -75,11 +75,8 @@ jobs:
       # Publish to Google Play
       #
       # This command publishes the app bundle to the internal track.
-      #
-      # The app bundle is found in the $(pwd) directory and is named "app-release.aab".
       - name: Publish to Google Play
         run: |
-          APP_FILE=$(find $(pwd) -name "*.aab")
           google-play bundles publish \
-          --bundle "$APP_FILE" \
+          --bundle "build/app/outputs/bundle/release/app-release.aab" \
           --track internal
