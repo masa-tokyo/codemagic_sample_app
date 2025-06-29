@@ -57,8 +57,9 @@ jobs:
       # Build Android App Bundle
       #
       # This step increments the build number and builds the Android App Bundle.
-      # It fetches the latest build number from Google Play, increments it by 1,
-      # and then builds the app bundle with the new build number.
+      # It fetches the latest build number from Google Play (the highest build number 
+      # across all tracks), increments it by 1, and then builds the 
+      # app bundle with the new build number.
       - name: Build Android App Bundle
         run: |
           FLUTTER_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$GOOGLE_PLAY_PACKAGE_NAME") + 1))
