@@ -4,8 +4,73 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Can use Linux for Android builds (vs macOS for iOS)
+    runs-on: ubuntu-latest
+    env:
+        # Google Play authentication - Service Account JSON key
+        GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS }}
+        
+        # Android signing credentials
+        ANDROID_KEYSTORE_FILENAME: ${{ vars.ANDROID_KEYSTORE_FILENAME }}
+        ANDROID_KEY_ALIAS: ${{ vars.ANDROID_KEY_ALIAS }}
+        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        
+        # Google Play app configuration
+        GOOGLE_PLAY_PACKAGE_NAME: ${{ vars.GOOGLE_PLAY_PACKAGE_NAME }}
+        
     steps:
-        # TODO(masaki): add actual implementation
-      - name: Verify workflow triggers
-        run: echo "Workflow triggered successfully" 
+      # Standard setup steps
+      - uses: actions/checkout@v4
+      
+      # Flutter setup
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+            channel: stable
+      
+      # Install Codemagic CLI tools
+      - name: Install Codemagic CLI tools
+        run: pip install codemagic-cli-tools
+      
+      # Android signing setup
+      #
+      # Decode the base64-encoded keystore from GitHub secrets and save it.
+      # The ANDROID_KEYSTORE secret contains the keystore file encoded in base64.
+      # This keystore file is required for signing the Android app bundle.
+      - name: Set up Android keystore
+        run: |
+          echo "$ANDROID_KEYSTORE" | base64 --decode > android/app/$ANDROID_KEYSTORE_FILENAME
+
+      # Create key.properties file with Android signing configuration
+      #
+      # This file is used by Flutter build process to sign the app bundle.
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << EOF
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyPassword=$ANDROID_KEY_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          storeFile=$ANDROID_KEYSTORE_FILENAME
+          EOF
+          
+      # Build Android App Bundle
+      #
+      # This step increments the build number and builds the Android App Bundle.
+      # It fetches the latest build number from Google Play (the highest build number 
+      # across all tracks), increments it by 1, and then builds the 
+      # app bundle with the new build number.
+      - name: Build Android App Bundle
+        run: |
+          FLUTTER_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$GOOGLE_PLAY_PACKAGE_NAME") + 1))
+          flutter build appbundle --release --build-number=$FLUTTER_BUILD_NUMBER
+          
+      # Publish to Google Play
+      #
+      # This command publishes the app bundle to the internal track.
+      - name: Publish to Google Play
+        run: |
+          google-play bundles publish \
+          --bundle "build/app/outputs/bundle/release/app-release.aab" \
+          --track internal \
+          --draft
