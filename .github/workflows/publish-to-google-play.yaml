@@ -67,13 +67,19 @@ jobs:
           export FLUTTER_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$GOOGLE_PLAY_PACKAGE_NAME") + 1))
           echo "FLUTTER_BUILD_NUMBER=$FLUTTER_BUILD_NUMBER" >> $GITHUB_ENV
           
-      # Build Android App Bundle (equivalent to building iOS .ipa)
+      # Build Android App Bundle
       - name: Build Android App Bundle
         run: |
           flutter build appbundle --release --build-number=$FLUTTER_BUILD_NUMBER
           
-      # Publish to Google Play (equivalent to App Store Connect publish)
+      # Publish to Google Play
+      #
+      # This command publishes the app bundle to the internal track.
+      #
+      # The app bundle is found in the $(pwd) directory and is named "app-release.aab".
       - name: Publish to Google Play
         run: |
-          # TODO(masaki): 5. Use google-play publish command with .aab file
-          # Similar structure to app-store-connect publish but for Android 
+          APP_FILE=$(find $(pwd) -name "*.aab")
+          google-play bundles publish \
+          --bundle "$APP_FILE" \
+          --track internal
