@@ -28,7 +28,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-            channel: 'stable'
+            channel: stable
       
       # Install Codemagic CLI tools
       - name: Install Codemagic CLI tools
@@ -79,4 +79,5 @@ jobs:
         run: |
           google-play bundles publish \
           --bundle "build/app/outputs/bundle/release/app-release.aab" \
-          --track "internal"
+          --track internal \
+          --draft
